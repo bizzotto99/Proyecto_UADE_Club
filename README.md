@@ -29,8 +29,8 @@ Puedes configurar estas variables en tu sistema o IDE:
 | `DB_HOST` | Host de la base de datos MySQL | `localhost` |
 | `DB_PORT` | Puerto de la base de datos | `3306` |
 | `DB_NAME` | Nombre de la base de datos | `camisetas_db` |
-| `DB_USER` | Usuario de MySQL | `root` |
-| `DB_PASSWORD` | Contraseña de MySQL | `root123` |
+| `DB_USER` | Usuario de MySQL | `tu usuario` |
+| `DB_PASSWORD` | Contraseña de MySQL | `tu clave` |
 
 ## 🏃 Ejecución
 
