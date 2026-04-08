@@ -44,5 +44,5 @@ Es necesario configurar las siguientes variables en el sistema o entorno de desa
 
 1. **Clonar el repositorio:**
    ```bash
-   git clone [https://github.com/bizzotto99/Proyecto_UADE_Club.git](https://github.com/bizzotto99/Proyecto_UADE_Club.git)
+   git clone https://github.com/bizzotto99/Proyecto_UADE_Club.git
    cd ProyectoCamisetas
