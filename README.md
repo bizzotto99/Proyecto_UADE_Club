@@ -1,3 +1,7 @@
+<p align="center">
+  <img src="logo.png" alt="Logo de Proyecto Camisetas" width="200"/>
+</p>
+
 # E-commerce de Camisetas de Fútbol - Backend
 
 Este es un backend para una plataforma de e-commerce especializada en la venta de camisetas de fútbol, desarrollado con **Spring Boot 3**. Incluye funcionalidades de catálogo, gestión de carrito de compras, procesamiento de órdenes y seguridad mediante JWT.
@@ -20,7 +24,7 @@ Este es un backend para una plataforma de e-commerce especializada en la venta d
 
 El proyecto utiliza variables de entorno para la configuración de la base de datos, lo que permite una fácil adaptación a diferentes entornos sin necesidad de modificar el código fuente.
 
-### Variables de Entorno Disponibles
+### Variables de Envío Disponibles
 
 Es necesario configurar las siguientes variables en el sistema o entorno de desarrollo:
 
