@@ -246,10 +246,10 @@ public class CatalogService {
                 .fotosUrls(p.getImagenes() != null ?
                         p.getImagenes().stream().map(com.ecommerce.camisetas.model.entity.ProductoImagen::getUrl).collect(Collectors.toList())
                         : new ArrayList<>())
-                .idClub(p.getClub().getIdClub())
-                .nombreClub(p.getClub().getNombre())
-                .idCategoria(p.getCategoria().getIdCategoria())
-                .nombreCategoria(p.getCategoria().getNombre())
+                .idClub(p.getClub() != null ? p.getClub().getIdClub() : null)
+                .nombreClub(p.getClub() != null ? p.getClub().getNombre() : "Sin Club")
+                .idCategoria(p.getCategoria() != null ? p.getCategoria().getIdCategoria() : null)
+                .nombreCategoria(p.getCategoria() != null ? p.getCategoria().getNombre() : "Sin Categoría")
                 .talles(tallesDto)
                 .build();
 

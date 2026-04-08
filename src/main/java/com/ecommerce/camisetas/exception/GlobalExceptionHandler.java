@@ -24,7 +24,8 @@ public class GlobalExceptionHandler {
 
     @ExceptionHandler(Exception.class)
     public ResponseEntity<Object> handleGlobalException(Exception ex) {
-        return buildResponseEntity(HttpStatus.INTERNAL_SERVER_ERROR, "Ha ocurrido un error inesperado. Por favor, intente más tarde.");
+        ex.printStackTrace(); // Imprime el error real en la consola para depuración
+        return buildResponseEntity(HttpStatus.INTERNAL_SERVER_ERROR, "Ha ocurrido un error inesperado: " + ex.getMessage());
     }
 
     private ResponseEntity<Object> buildResponseEntity(HttpStatus status, String message) {
