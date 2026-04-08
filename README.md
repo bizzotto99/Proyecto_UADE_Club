@@ -1,28 +1,28 @@
-# Proyecto RE PIOLA DE Camisetas - E-commerce de Fútbol ⚽
+# E-commerce de Camisetas de Fútbol - Backend
 
 Este es un backend para una plataforma de e-commerce especializada en la venta de camisetas de fútbol, desarrollado con **Spring Boot 3**. Incluye funcionalidades de catálogo, gestión de carrito de compras, procesamiento de órdenes y seguridad mediante JWT.
 
-## 🚀 Características
+## Características Principales
 
-- **Autenticación y Autorización**: Sistema de login y registro usando **JWT (JSON Web Tokens)**.
+- **Autenticación y Autorización**: Sistema de inicio de sesión y registro utilizando **JWT (JSON Web Tokens)**.
 - **Catálogo de Productos**: Gestión de artículos, categorías y clubes.
-- **Carrito de Compras**: Agregar, modificar y eliminar artículos de un carrito activo por usuario.
-- **Gestión de Órdenes**: Proceso de checkout y creación de órdenes de compra.
-- **Base de Datos**: Integración con MySQL y carga de datos iniciales mediante `import.sql`.
+- **Carrito de Compras**: Funcionalidad para agregar, modificar y eliminar artículos de un carrito activo por usuario.
+- **Gestión de Órdenes**: Procesamiento de checkout y creación de órdenes de compra.
+- **Base de Datos**: Integración con MySQL y carga de datos iniciales mediante el script `import.sql`.
 
-## 🛠️ Requisitos Previos
+## Requisitos Previos
 
 - **Java 17** o superior.
 - **MySQL 8.0** o superior.
 - **Maven** (incluido mediante el wrapper `./mvnw`).
 
-## ⚙️ Configuración
+## Configuración
 
-El proyecto utiliza variables de entorno para la configuración de la base de datos, lo que permite una fácil personalización sin modificar el código fuente.
+El proyecto utiliza variables de entorno para la configuración de la base de datos, lo que permite una fácil adaptación a diferentes entornos sin necesidad de modificar el código fuente.
 
 ### Variables de Entorno Disponibles
 
-Puedes configurar estas variables en tu sistema o IDE:
+Es necesario configurar las siguientes variables en el sistema o entorno de desarrollo:
 
 | Variable | Descripción | Valor por Defecto |
 | :--- | :--- | :--- |
@@ -32,38 +32,9 @@ Puedes configurar estas variables en tu sistema o IDE:
 | `DB_USER` | Usuario de MySQL | `tu usuario` |
 | `DB_PASSWORD` | Contraseña de MySQL | `tu clave` |
 
-## 🏃 Ejecución
+## Ejecución del Proyecto
 
 1. **Clonar el repositorio:**
    ```bash
-   git clone https://github.com/bizzotto99/Proyecto_UADE_Club.git
+   git clone [https://github.com/bizzotto99/Proyecto_UADE_Club.git](https://github.com/bizzotto99/Proyecto_UADE_Club.git)
    cd ProyectoCamisetas
-   ```
-
-2. **Configurar la base de datos:**
-   Asegúrate de que MySQL esté corriendo y de tener creada la base de datos (o deja que el parámetro `createDatabaseIfNotExist=true` la cree por ti).
-
-3. **Correr la aplicación:**
-   ```bash
-   ./mvnw spring-boot:run
-   ```
-
-La aplicación estará disponible en `http://localhost:8080`.
-
-## 🧪 Probar la API
-
-Puedes usar Postman o `curl` para interactuar con los endpoints.
-
-### Flujo recomendado:
-1. **Registro/Login**: Envía un `POST` a `/api/auth/register` o `/api/auth/login` para obtener tu token.
-2. **Catálogo**: Explora los productos en `GET /api/catalogo`.
-3. **Carrito**: Usa el token en el header `Authorization: Bearer <token>` para agregar ítems en `POST /api/carrito/items`.
-
-## 📂 Estructura del Proyecto
-
-- `src/main/java`: Contiene el código fuente organizado por capas (controller, service, repository, model).
-- `src/main/resources`: Archivos de configuración (`application.yml`) y scripts SQL (`import.sql`).
-- `.gitignore`: Configurado para evitar subir archivos temporales y sensibles.
-
----
-Desarrollado con ❤️ para los amantes del fútbol.
