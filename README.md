@@ -1,4 +1,4 @@
-# Proyecto Camisetas - E-commerce de Fútbol ⚽
+# Proyecto RE PIOLA DE Camisetas - E-commerce de Fútbol ⚽
 
 Este es un backend para una plataforma de e-commerce especializada en la venta de camisetas de fútbol, desarrollado con **Spring Boot 3**. Incluye funcionalidades de catálogo, gestión de carrito de compras, procesamiento de órdenes y seguridad mediante JWT.
 
