@@ -1,5 +1,9 @@
 <p align="center">
-  <img src="logo.png" alt="Logo de Proyecto Camisetas" width="200"/>
+  <img src="https://i.pinimg.com/originals/6f/b8/cb/6fb8cbb7f4c14761a73e7b38d1eeffb2.gif" alt="Meme Izquierda" height="150" style="vertical-align: middle;"/>
+  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+  <img src="logo.png" alt="Logo de Proyecto Camisetas" width="200" style="vertical-align: middle;"/>
+  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+  <img src="https://i.pinimg.com/originals/6f/b8/cb/6fb8cbb7f4c14761a73e7b38d1eeffb2.gif" alt="Meme Derecha" height="150" style="vertical-align: middle;"/>
 </p>
 
 # E-commerce de Camisetas de Fútbol - Backend
