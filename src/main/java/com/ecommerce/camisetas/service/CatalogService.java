@@ -23,6 +23,7 @@ public class CatalogService {
     private final ClubRepository clubRepository;
     private final ProductoImagenRepository productoImagenRepository;
     private final DescuentoRepository descuentoRepository;
+    private final FileStorageService fileStorageService;
 
     public List<ProductoDto> obtenerProductosActivos(Long idCategoria, Double precioMin, Double precioMax, String nombre) {
         return productoRepository.findFiltrados(idCategoria, precioMin, precioMax, nombre).stream()
@@ -37,11 +38,17 @@ public class CatalogService {
     }
 
     @Transactional
-    public ProductoDto crearProducto(ProductoRequestDto request) {
+    public ProductoDto crearProducto(ProductoRequestDto request, org.springframework.web.multipart.MultipartFile imagen) {
         Categoria categoria = categoriaRepository.findById(request.getIdCategoria())
                 .orElseThrow(() -> new ResourceNotFoundException("Categoría no encontrada"));
         Club club = clubRepository.findById(request.getIdClub())
                 .orElseThrow(() -> new ResourceNotFoundException("Club no encontrado"));
+
+        String fotoUrl = request.getFotoUrl();
+        if (imagen != null && !imagen.isEmpty()) {
+            String fileName = fileStorageService.saveFile(imagen);
+            fotoUrl = "/uploads/" + fileName;
+        }
 
         Producto prod = Producto.builder()
                 .nombre(request.getNombre())
@@ -50,7 +57,7 @@ public class CatalogService {
                 .stock(request.getStock())
                 .temporada(request.getTemporada())
                 .tipo(request.getTipo())
-                .fotoUrl(request.getFotoUrl())
+                .fotoUrl(fotoUrl)
                 .club(club)
                 .categoria(categoria)
                 .build();
@@ -69,7 +76,7 @@ public class CatalogService {
             guardado.setProductoTalles(new ArrayList<>());
         }
 
-        // Guardar múltiples imágenes
+        // Guardar múltiples imágenes (si vienen como URLs en el request por ahora se mantienen)
         if (request.getFotosUrls() != null && !request.getFotosUrls().isEmpty()) {
             List<com.ecommerce.camisetas.model.entity.ProductoImagen> imagenes = request.getFotosUrls().stream()
                     .map(url -> com.ecommerce.camisetas.model.entity.ProductoImagen.builder()
@@ -94,7 +101,7 @@ public class CatalogService {
     }
 
     @Transactional
-    public ProductoDto actualizarProducto(Long id, ProductoRequestDto request) {
+    public ProductoDto actualizarProducto(Long id, ProductoRequestDto request, org.springframework.web.multipart.MultipartFile imagen) {
         Producto p = getProductoEntity(id);
 
         if (request.getNombre() != null) p.setNombre(request.getNombre());
@@ -103,7 +110,13 @@ public class CatalogService {
         if (request.getStock() != null) p.setStock(request.getStock());
         if (request.getTemporada() != null) p.setTemporada(request.getTemporada());
         if (request.getTipo() != null) p.setTipo(request.getTipo());
-        if (request.getFotoUrl() != null) p.setFotoUrl(request.getFotoUrl());
+        
+        if (imagen != null && !imagen.isEmpty()) {
+            String fileName = fileStorageService.saveFile(imagen);
+            p.setFotoUrl("/uploads/" + fileName);
+        } else if (request.getFotoUrl() != null) {
+            p.setFotoUrl(request.getFotoUrl());
+        }
 
         if (request.getIdCategoria() != null) {
             Categoria cat = categoriaRepository.findById(request.getIdCategoria())

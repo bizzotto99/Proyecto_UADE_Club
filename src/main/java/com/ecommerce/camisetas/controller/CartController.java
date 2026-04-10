@@ -42,4 +42,10 @@ public class CartController {
             @RequestParam Integer cantidad) {
         return ResponseEntity.ok(cartService.modificarCantidadItem(usuario.getIdUsuario(), idItem, cantidad));
     }
+
+    @DeleteMapping
+    public ResponseEntity<Void> vaciarCarrito(@org.springframework.security.core.annotation.AuthenticationPrincipal com.ecommerce.camisetas.model.entity.Usuario usuario) {
+        cartService.vaciarCarrito(usuario.getIdUsuario());
+        return ResponseEntity.noContent().build();
+    }
 }

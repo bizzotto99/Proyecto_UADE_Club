@@ -31,9 +31,11 @@ public class CatalogController {
         return ResponseEntity.ok(catalogService.obtenerProducto(id));
     }
 
-    @PostMapping("/productos")
-    public ResponseEntity<ProductoDto> crearProducto(@RequestBody @Validated ProductoRequestDto request) {
-        return new ResponseEntity<>(catalogService.crearProducto(request), HttpStatus.CREATED);
+    @PostMapping(value = "/productos", consumes = org.springframework.http.MediaType.MULTIPART_FORM_DATA_VALUE)
+    public ResponseEntity<ProductoDto> crearProducto(
+            @RequestPart("producto") @Validated ProductoRequestDto request,
+            @RequestPart(value = "imagen", required = false) org.springframework.web.multipart.MultipartFile imagen) {
+        return new ResponseEntity<>(catalogService.crearProducto(request, imagen), HttpStatus.CREATED);
     }
 
     @DeleteMapping("/productos/{id}")
@@ -42,9 +44,12 @@ public class CatalogController {
         return ResponseEntity.noContent().build();
     }
 
-    @PutMapping("/productos/{id}")
-    public ResponseEntity<ProductoDto> actualizarProducto(@PathVariable Long id, @RequestBody ProductoRequestDto request) {
-        return ResponseEntity.ok(catalogService.actualizarProducto(id, request));
+    @PutMapping(value = "/productos/{id}", consumes = org.springframework.http.MediaType.MULTIPART_FORM_DATA_VALUE)
+    public ResponseEntity<ProductoDto> actualizarProducto(
+            @PathVariable Long id,
+            @RequestPart("producto") ProductoRequestDto request,
+            @RequestPart(value = "imagen", required = false) org.springframework.web.multipart.MultipartFile imagen) {
+        return ResponseEntity.ok(catalogService.actualizarProducto(id, request, imagen));
     }
 
     @GetMapping("/categorias")

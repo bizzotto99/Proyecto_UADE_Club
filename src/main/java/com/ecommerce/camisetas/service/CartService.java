@@ -161,6 +161,18 @@ public class CartService {
         return mapToDto(guardado);
     }
 
+    @Transactional
+    public void vaciarCarrito(Long idUsuario) {
+        Carrito carrito = carritoRepository.findByUsuarioIdUsuarioAndEstado(idUsuario, EstadoCarrito.ACTIVO)
+                .orElseThrow(() -> new BusinessValidationException("El usuario no tiene un carrito activo."));
+        
+        if (carrito.getItems() != null && !carrito.getItems().isEmpty()) {
+            itemCarritoRepository.deleteAll(carrito.getItems());
+            carrito.getItems().clear();
+            carritoRepository.save(carrito);
+        }
+    }
+
     private CarritoDto mapToDto(Carrito c) {
         List<ItemCarritoDto> itemsDto = c.getItems() != null ?
                 c.getItems().stream().map(i -> ItemCarritoDto.builder()

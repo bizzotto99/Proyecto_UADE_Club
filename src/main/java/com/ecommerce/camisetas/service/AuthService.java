@@ -81,6 +81,10 @@ public class AuthService {
                 .build();
     }
 
+    public UsuarioDto getPerfil(Usuario usuario) {
+        return mapToDto(usuario);
+    }
+
     private UsuarioDto mapToDto(Usuario u) {
         return UsuarioDto.builder()
                 .idUsuario(u.getIdUsuario())

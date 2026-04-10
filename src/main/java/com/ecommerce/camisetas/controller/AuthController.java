@@ -27,4 +27,9 @@ public class AuthController {
     public ResponseEntity<LoginResponseDto> login(@RequestBody @Validated LoginRequestDto request) {
         return ResponseEntity.ok(authService.login(request));
     }
+
+    @GetMapping("/me")
+    public ResponseEntity<UsuarioDto> getPerfil(@org.springframework.security.core.annotation.AuthenticationPrincipal com.ecommerce.camisetas.model.entity.Usuario usuario) {
+        return ResponseEntity.ok(authService.getPerfil(usuario));
+    }
 }

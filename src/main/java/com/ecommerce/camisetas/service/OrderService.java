@@ -8,6 +8,7 @@ import com.ecommerce.camisetas.model.dto.OrdenDto;
 import com.ecommerce.camisetas.model.entity.*;
 import com.ecommerce.camisetas.model.enums.EstadoCarrito;
 import com.ecommerce.camisetas.model.enums.EstadoOrden;
+import com.ecommerce.camisetas.model.enums.RolUsuario;
 import com.ecommerce.camisetas.repository.*;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -101,9 +102,26 @@ public class OrderService {
         return mapToDto(ordenGuardada);
     }
 
-    public List<OrdenDto> obtenerOrdenesDeUsuario(Long idUsuario) {
-        return ordenRepository.findByUsuarioIdUsuario(idUsuario)
-                .stream().map(this::mapToDto).collect(Collectors.toList());
+    public List<OrdenDto> obtenerOrdenesDeUsuario(Usuario usuario) {
+        if (usuario.getRol() == RolUsuario.VENDEDOR || usuario.getRol() == RolUsuario.ADMIN) {
+            return ordenRepository.findAll()
+                    .stream().map(this::mapToDto).collect(Collectors.toList());
+        } else {
+            return ordenRepository.findByUsuarioIdUsuario(usuario.getIdUsuario())
+                    .stream().map(this::mapToDto).collect(Collectors.toList());
+        }
+    }
+
+    public OrdenDto obtenerOrden(Usuario usuario, Long idOrden) {
+        Orden orden;
+        if (usuario.getRol() == RolUsuario.VENDEDOR || usuario.getRol() == RolUsuario.ADMIN) {
+            orden = ordenRepository.findById(idOrden)
+                    .orElseThrow(() -> new ResourceNotFoundException("Orden no encontrada"));
+        } else {
+            orden = ordenRepository.findByIdOrdenAndUsuarioIdUsuario(idOrden, usuario.getIdUsuario())
+                    .orElseThrow(() -> new ResourceNotFoundException("Orden no encontrada"));
+        }
+        return mapToDto(orden);
     }
 
     private OrdenDto mapToDto(Orden o) {

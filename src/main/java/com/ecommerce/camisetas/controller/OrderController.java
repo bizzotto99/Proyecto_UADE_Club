@@ -27,6 +27,13 @@ public class OrderController {
 
     @GetMapping
     public ResponseEntity<List<OrdenDto>> obtenerMisOrdenes(@org.springframework.security.core.annotation.AuthenticationPrincipal com.ecommerce.camisetas.model.entity.Usuario usuario) {
-        return ResponseEntity.ok(orderService.obtenerOrdenesDeUsuario(usuario.getIdUsuario()));
+        return ResponseEntity.ok(orderService.obtenerOrdenesDeUsuario(usuario));
+    }
+
+    @GetMapping("/{id}")
+    public ResponseEntity<OrdenDto> obtenerOrden(
+            @org.springframework.security.core.annotation.AuthenticationPrincipal com.ecommerce.camisetas.model.entity.Usuario usuario,
+            @PathVariable Long id) {
+        return ResponseEntity.ok(orderService.obtenerOrden(usuario, id));
     }
 }

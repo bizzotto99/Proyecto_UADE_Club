@@ -26,6 +26,7 @@ public class SecurityConfig {
             .authorizeHttpRequests(auth -> auth
                 .requestMatchers("/api/auth/**").permitAll()
                 .requestMatchers(HttpMethod.GET, "/api/catalogo/**").permitAll()
+                .requestMatchers("/uploads/**").permitAll()
                 .requestMatchers(HttpMethod.POST, "/api/catalogo/**").hasRole("VENDEDOR")
                 .requestMatchers(HttpMethod.PUT, "/api/catalogo/**").hasRole("VENDEDOR")
                 .requestMatchers(HttpMethod.DELETE, "/api/catalogo/**").hasRole("VENDEDOR")
