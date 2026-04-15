@@ -1,3 +1,5 @@
+//Productos y tambien la carga de ellos la oficina jeje
+
 package com.ecommerce.camisetas.controller;
 
 import com.ecommerce.camisetas.model.dto.*;
@@ -17,7 +19,8 @@ public class CatalogController {
 
     private final CatalogService catalogService;
 
-    @GetMapping("/productos")
+    @GetMapping("/productos") // Busca productos. Permite filtrar por nombre, club, categoría o rango de
+                              // precios.
     public ResponseEntity<List<ProductoDto>> obtenerProductos(
             @RequestParam(required = false) Long categoriaId,
             @RequestParam(required = false) Double precioMin,
@@ -31,8 +34,19 @@ public class CatalogController {
         return ResponseEntity.ok(catalogService.obtenerProducto(id));
     }
 
+    @PostMapping(value = "/productos", consumes = org.springframework.http.MediaType.APPLICATION_JSON_VALUE) // CREACIÓN
+                                                                                                             // (Soporta
+                                                                                                             // JSON o
+                                                                                                             // carga de
+                                                                                                             // imagen
+                                                                                                             // física
+                                                                                                             // MULTIPART)
+    public ResponseEntity<ProductoDto> crearProductoJson(@RequestBody @Validated ProductoRequestDto request) {
+        return new ResponseEntity<>(catalogService.crearProducto(request, null), HttpStatus.CREATED);
+    }
+
     @PostMapping(value = "/productos", consumes = org.springframework.http.MediaType.MULTIPART_FORM_DATA_VALUE)
-    public ResponseEntity<ProductoDto> crearProducto(
+    public ResponseEntity<ProductoDto> crearProductoMultipart(
             @RequestPart("producto") @Validated ProductoRequestDto request,
             @RequestPart(value = "imagen", required = false) org.springframework.web.multipart.MultipartFile imagen) {
         return new ResponseEntity<>(catalogService.crearProducto(request, imagen), HttpStatus.CREATED);
@@ -44,8 +58,14 @@ public class CatalogController {
         return ResponseEntity.noContent().build();
     }
 
+    @PutMapping(value = "/productos/{id}", consumes = org.springframework.http.MediaType.APPLICATION_JSON_VALUE)
+    public ResponseEntity<ProductoDto> actualizarProductoJson(@PathVariable Long id,
+            @RequestBody ProductoRequestDto request) {
+        return ResponseEntity.ok(catalogService.actualizarProducto(id, request, null));
+    }
+
     @PutMapping(value = "/productos/{id}", consumes = org.springframework.http.MediaType.MULTIPART_FORM_DATA_VALUE)
-    public ResponseEntity<ProductoDto> actualizarProducto(
+    public ResponseEntity<ProductoDto> actualizarProductoMultipart(
             @PathVariable Long id,
             @RequestPart("producto") ProductoRequestDto request,
             @RequestPart(value = "imagen", required = false) org.springframework.web.multipart.MultipartFile imagen) {

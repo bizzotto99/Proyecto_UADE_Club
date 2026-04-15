@@ -1,3 +1,4 @@
+//cuando un recurso no existe en la base de datos.
 package com.ecommerce.camisetas.exception;
 
 import org.springframework.http.HttpStatus;

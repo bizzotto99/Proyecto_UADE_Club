@@ -13,18 +13,24 @@ import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 
+// Configuración técnica del sistema de autenticación.
+// Define cómo Spring Security debe cargar usuarios, verificar contraseñas y gestionar la autenticación.
 @Configuration
 @RequiredArgsConstructor
 public class ApplicationConfig {
 
     private final UsuarioRepository repository;
 
+    // Le enseña a Spring cómo buscar un usuario en la base de datos a partir de su username.
+    // Spring Security llama a este método internamente durante el proceso de login.
     @Bean
     public UserDetailsService userDetailsService() {
         return username -> repository.findByUsername(username)
                 .orElseThrow(() -> new UsernameNotFoundException("Usuario no encontrado: " + username));
     }
 
+    // Configura el "verificador de credenciales" que Spring usará durante el login.
+    // Conecta el UserDetailsService (cómo buscar al usuario) con el PasswordEncoder (cómo verificar la contraseña).
     @Bean
     public AuthenticationProvider authenticationProvider() {
         DaoAuthenticationProvider authProvider = new DaoAuthenticationProvider();
@@ -33,11 +39,16 @@ public class ApplicationConfig {
         return authProvider;
     }
 
+    // El AuthenticationManager es el componente que Spring usa para ejecutar el proceso de autenticación.
+    // Lo usamos en AuthService.login() para verificar username + contraseña.
     @Bean
     public AuthenticationManager authenticationManager(AuthenticationConfiguration config) throws Exception {
         return config.getAuthenticationManager();
     }
 
+    // Configura BCrypt como algoritmo de cifrado de contraseñas.
+    // BCrypt es un algoritmo seguro que aplica "salt" automáticamente, haciendo imposible
+    // descifrar la contraseña aunque alguien acceda a la base de datos.
     @Bean
     public PasswordEncoder passwordEncoder() {
         return new BCryptPasswordEncoder();

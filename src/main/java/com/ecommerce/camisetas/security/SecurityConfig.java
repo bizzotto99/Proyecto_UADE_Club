@@ -11,29 +11,47 @@ import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 
+// "El reglamento del edificio": define quién puede entrar a cada área del sistema.
+// Esta clase centraliza TODAS las reglas de seguridad de la aplicación.
 @Configuration
-@EnableWebSecurity
+@EnableWebSecurity // Activa el sistema de seguridad de Spring
 @RequiredArgsConstructor
 public class SecurityConfig {
 
-    private final JwtAuthenticationFilter jwtAuthFilter;
-    private final AuthenticationProvider authenticationProvider;
+    private final JwtAuthenticationFilter jwtAuthFilter; // El guardia de la puerta
+    private final AuthenticationProvider authenticationProvider; // El verificador de credenciales
 
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
         http
+            // Deshabilitamos CSRF porque usamos JWT (no cookies de sesión, que son vulnerables a CSRF).
             .csrf(csrf -> csrf.disable())
+
+            // Definimos las reglas de acceso por URL y método HTTP:
             .authorizeHttpRequests(auth -> auth
-                .requestMatchers("/api/auth/**").permitAll()
-                .requestMatchers(HttpMethod.GET, "/api/catalogo/**").permitAll()
-                .requestMatchers("/uploads/**").permitAll()
+
+                // RUTAS PÚBLICAS (sin necesidad de estar logueado):
+                .requestMatchers("/api/auth/**").permitAll()          // Registro y Login
+                .requestMatchers(HttpMethod.GET, "/api/catalogo/**").permitAll() // Ver el catálogo
+                .requestMatchers("/uploads/**").permitAll()            // Ver imágenes subidas
+
+                // RUTAS EXCLUSIVAS PARA VENDEDORES:
+                // Solo usuarios con rol VENDEDOR pueden crear, modificar o borrar productos/descuentos.
                 .requestMatchers(HttpMethod.POST, "/api/catalogo/**").hasRole("VENDEDOR")
                 .requestMatchers(HttpMethod.PUT, "/api/catalogo/**").hasRole("VENDEDOR")
                 .requestMatchers(HttpMethod.DELETE, "/api/catalogo/**").hasRole("VENDEDOR")
+
+                // CUALQUIER OTRA RUTA requiere estar logueado (ej: carrito, órdenes).
                 .anyRequest().authenticated()
             )
+
+            // Configuramos sesiones STATELESS: el servidor no guarda estado del usuario entre peticiones.
+            // Toda la información (quién es el usuario) viaja dentro del Token JWT en cada petición.
             .sessionManagement(sess -> sess.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
+
             .authenticationProvider(authenticationProvider)
+
+            // Registramos nuestro filtro JWT para que se ejecute ANTES del filtro estándar de Spring.
             .addFilterBefore(jwtAuthFilter, UsernamePasswordAuthenticationFilter.class);
 
         return http.build();
